@@ -1,5 +1,3 @@
-
-
 'use strict';
 
 /* -- Configuration ------------------------------------------- */
@@ -358,7 +356,7 @@ window.addEventListener('resize', () => {
 /* -- Van Button ------------------------------------------------ */
 const vanBtn = document.getElementById('van-btn');
 vanBtn.addEventListener('click', () => {
-  console.log('Van button clicked - hook up drive.html here.');
+  window.location.href = 'drive.html';
 });
 
 /* -- Init ------------------------------------------------------ */

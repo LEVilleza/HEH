@@ -527,3 +527,154 @@ html, body {
 
   .bubble { opacity: 1; }
 }
+/* ============================================================
+   GALLERY PAGE - drive.html specific styles
+   ============================================================ */
+
+/* == Image Bubble ============================================
+   Overrides the default text-bubble padding/layout so the
+   photo fills the full circle, with the glass highlight on top.
+   =========================================================== */
+.bubble--image {
+  padding: 0;
+  overflow: hidden;
+  /* Remove the default specular gradient - we add it via ::after
+     so it layers on top of the photo */
+  background-image: none;
+}
+
+/* Circular photo thumbnail */
+.bubble--image .bubble-thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  pointer-events: none;
+  /* Slight transparency lets the rose glass tint bleed through edges */
+  opacity: 0.88;
+  transition: opacity 0.3s ease;
+}
+
+/* Specular highlight re-added on top of the image */
+.bubble--image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 32% 28%,
+    rgba(255, 255, 255, 0.32) 0%,
+    transparent 58%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bubble--image:hover .bubble-thumb {
+  opacity: 1;
+}
+
+/* == Gallery Modal Card ======================================
+   Wider than the message modal to give photos room to breathe.
+   =========================================================== */
+.modal-card--gallery {
+  max-width: 680px;
+  padding: 2.4rem 2.4rem 2rem;
+}
+
+/* Photo container - centres image and reserves space while loading */
+.modal-photo-wrap {
+  position: relative;
+  width: 100%;
+  min-height: 200px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 1.2rem;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* The full-resolution photo */
+.modal-photo {
+  display: block;
+  width: 100%;
+  max-height: 62vh;
+  object-fit: contain;
+  border-radius: 16px;
+  transition: opacity 0.4s ease;
+}
+
+/* Shimmer placeholder shown while the full image loads */
+.modal-photo-shimmer {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerSlide 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmerSlide {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* Caption below photo */
+.modal-caption {
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.75);
+  text-align: center;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
+}
+
+/* == Back Button =============================================
+   Sits bottom-right, styled identically to the music toggle.
+   =========================================================== */
+.back-btn {
+  position: fixed;
+  bottom: 1.6rem;
+  right: 1.6rem;
+  z-index: 20;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.20);
+  transform: scale(1.08) translateX(-2px);
+  box-shadow: 0 0 20px rgba(252, 98, 111, 0.3);
+}
+
+/* == Responsive tweaks for gallery modal ======================= */
+@media (max-width: 600px) {
+  .modal-card--gallery {
+    padding: 1.8rem 1.4rem 1.6rem;
+  }
+
+  .modal-photo {
+    max-height: 50vh;
+  }
+}

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Happy Birthday 💫</title>
+  <title>Galleryy</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,76 +12,75 @@
 <body>
 
   <!-- =========================================
-       VIDEO BACKGROUND
+       VIDEO BACKGROUND (same looping clip)
   ========================================= -->
   <div class="video-bg-wrapper">
     <video id="bg-video" autoplay muted loop playsinline>
       <source src="assets/background/bg-loop.webm" type="video/webm" />
       <source src="assets/background/bg-loop.mp4"  type="video/mp4"  />
     </video>
-    <!-- Soft dark overlay so text/bubbles stay readable -->
     <div class="video-overlay"></div>
   </div>
 
   <!-- =========================================
        AMBIENT STAR PARTICLES
   ========================================= -->
-  <div class="stars-layer" aria-hidden="true">
-    <!-- Generated programmatically in script.js -->
-  </div>
+  <div class="stars-layer" aria-hidden="true"></div>
 
   <!-- =========================================
-       HEADER / TITLE
+       HEADER
   ========================================= -->
   <header class="site-header">
-    <p class="site-subtitle">a little something for you</p>
-    <h1 class="site-title">Happy Birthday May<span class="title-gem">✦</span></h1>
-    <p class="site-hint">pop a bubble to open the message</p>
+    <p class="site-subtitle">captured just for you</p>
+    <h1 class="site-title">Moments of Celebration<span class="title-gem">✦</span></h1>
+    <p class="site-hint">pop a bubble to see the photo</p>
   </header>
 
   <!-- =========================================
-       BUBBLE SCENE
+       BUBBLE SCENE — drive-script.js populates
   ========================================= -->
-  <div id="bubble-scene" aria-label="Floating birthday message bubbles"></div>
+  <div id="bubble-scene" aria-label="Floating photo bubbles"></div>
 
   <!-- =========================================
-       MESSAGE MODAL
+       PHOTO MODAL
   ========================================= -->
   <div id="modal-backdrop" class="modal-backdrop" aria-modal="true" role="dialog" hidden>
-    <div id="modal-card" class="modal-card">
-      <button id="modal-close" class="modal-close" aria-label="Close message">✕</button>
-      <div class="modal-gem-row">
-        <span class="modal-gem-icon">✦</span>
+    <div id="modal-card" class="modal-card modal-card--gallery">
+      <button id="modal-close" class="modal-close" aria-label="Close photo">✕</button>
+
+      <!-- Full-resolution photo -->
+      <div class="modal-photo-wrap">
+        <img id="modal-photo" class="modal-photo" src="" alt="" />
+        <!-- Subtle shimmer shown while image loads -->
+        <div class="modal-photo-shimmer" id="modal-shimmer"></div>
       </div>
-      <p id="modal-from" class="modal-from"></p>
-      <h2 id="modal-preview" class="modal-preview"></h2>
-      <div class="modal-divider"></div>
-      <div id="modal-body" class="modal-body"></div>
+
+      <!-- Caption -->
+      <p id="modal-caption" class="modal-caption"></p>
+
       <div class="modal-footer-gem">✦</div>
     </div>
   </div>
 
   <!-- =========================================
-       Background music
+       AUDIO
   ========================================= -->
   <audio id="bg-music" loop preload="auto">
     <source src="assets/music/theme.mp3" type="audio/mpeg" />
   </audio>
 
-  <!-- Music toggle button -->
   <button id="music-toggle" class="music-toggle" aria-label="Toggle music" title="Toggle music">
     <span class="music-icon music-icon--on">♪</span>
     <span class="music-icon music-icon--off" hidden>♩</span>
   </button>
 
-  <!-- ====Note to self=======================
-       VAN BUTTON (future second page hook)
+  <!-- =========================================
+       BACK BUTTON — returns to index.html
   ========================================= -->
-  <button id="van-btn" class="van-btn" aria-label="Go on a drive">
-    <img src="assets/ui/van-button.webp" alt="Van" />
+  <button id="back-btn" class="back-btn" aria-label="Go back home" title="Back to messages">
+    ←
   </button>
 
-  <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
-  <script src="script.js"></script>
+  <script src="drive_script.js"></script>
 </body>
 </html>
