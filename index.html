@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday 💫</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- =========================================
+       VIDEO BACKGROUND
+  ========================================= -->
+  <div class="video-bg-wrapper">
+    <video id="bg-video" autoplay muted loop playsinline>
+      <source src="assets/background/bg-loop.webm" type="video/webm" />
+      <source src="assets/background/bg-loop.mp4"  type="video/mp4"  />
+    </video>
+    <!-- Soft dark overlay so text/bubbles stay readable -->
+    <div class="video-overlay"></div>
+  </div>
+
+  <!-- =========================================
+       AMBIENT STAR PARTICLES
+  ========================================= -->
+  <div class="stars-layer" aria-hidden="true">
+    <!-- Generated programmatically in script.js -->
+  </div>
+
+  <!-- =========================================
+       HEADER / TITLE
+  ========================================= -->
+  <header class="site-header">
+    <p class="site-subtitle">a little something for you</p>
+    <h1 class="site-title">Happy Birthday May<span class="title-gem">✦</span></h1>
+    <p class="site-hint">pop a bubble to open the message</p>
+  </header>
+
+  <!-- =========================================
+       BUBBLE SCENE
+  ========================================= -->
+  <div id="bubble-scene" aria-label="Floating birthday message bubbles"></div>
+
+  <!-- =========================================
+       MESSAGE MODAL
+  ========================================= -->
+  <div id="modal-backdrop" class="modal-backdrop" aria-modal="true" role="dialog" hidden>
+    <div id="modal-card" class="modal-card">
+      <button id="modal-close" class="modal-close" aria-label="Close message">✕</button>
+      <div class="modal-gem-row">
+        <span class="modal-gem-icon">✦</span>
+      </div>
+      <p id="modal-from" class="modal-from"></p>
+      <h2 id="modal-preview" class="modal-preview"></h2>
+      <div class="modal-divider"></div>
+      <div id="modal-body" class="modal-body"></div>
+      <div class="modal-footer-gem">✦</div>
+    </div>
+  </div>
+
+  <!-- =========================================
+       Background music
+  ========================================= -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="assets/music/theme.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- Music toggle button -->
+  <button id="music-toggle" class="music-toggle" aria-label="Toggle music" title="Toggle music">
+    <span class="music-icon music-icon--on">♪</span>
+    <span class="music-icon music-icon--off" hidden>♩</span>
+  </button>
+
+  <!-- ====Note to self=======================
+       VAN BUTTON (future second page hook)
+  ========================================= -->
+  <button id="van-btn" class="van-btn" aria-label="Go on a drive" hidden>
+    <img src="assets/ui/van-button.webp" alt="Van" />
+  </button>
+
+  <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
+  <script src="script.js"></script>
+</body>
+</html>

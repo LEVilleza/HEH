@@ -1,0 +1,529 @@
+/* -- Custom Font: Crewniverse ------------------------------- */
+@font-face {
+  font-family: 'Crewniverse';
+  src: url('assets/fonts/crewniverse_font.otf') format('opentype'),
+       url('assets/fonts/crewniverse_font.ttf') format('truetype');
+  font-weight: normal;
+  font-style:  normal;
+  font-display: swap; /* show fallback text instantly while font loads */
+}
+
+/* -- CSS Custom Properties ---------------------------------- */
+:root {
+  /* Palette - soft SU pastels */
+  --clr-rose:       #f9c6d0;
+  --clr-peach:      #f5d0b8;
+  --clr-gold:       #fde6a0;
+  --clr-mint:       #d4f5e2;
+  --clr-sky:        #b8e8f5;
+  --clr-periwinkle: #c5cef5;
+  --clr-lavender:   #e8d5f5;
+  --clr-blue:       #c9d6f5;
+
+  /* UI colours */
+  --clr-text-light: rgba(255, 255, 255, 0.92);
+  --clr-text-soft:  rgba(255, 255, 255, 0.65);
+  --clr-glass-bg:   rgba(255, 255, 255, 0.12);
+  --clr-glass-border: rgba(255, 255, 255, 0.30);
+  --clr-modal-bg:   rgba(255, 255, 255, 0.18);
+  --clr-overlay:    rgba(20, 10, 40, 0.45);
+
+  /* Typography */
+  --font-display: 'Crewniverse', 'Playfair Display', Georgia, serif;
+  --font-body:    'Quicksand', 'Segoe UI', sans-serif;
+
+  /* Motion */
+  --ease-soft:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-modal: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* -- Reset & Base ------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* viewport locked; bubbles drift freely */
+  background: #1a0a2e; /* deep purple fallback when video absent */
+  font-family: var(--font-body);
+  color: var(--clr-text-light);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* -- Video Background --------------------------------------- */
+.video-bg-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#bg-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  /* Subtle slowdown - purely visual; actual speed controlled by video file */
+  filter: saturate(1.1) brightness(0.85);
+}
+
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  /* Gradient overlay: dark at bottom for header legibility, lighter top */
+  background: linear-gradient(
+    180deg,
+    rgba(20, 8, 48, 0.50) 0%,
+    rgba(20, 8, 48, 0.25) 40%,
+    rgba(20, 8, 48, 0.40) 100%
+  );
+}
+
+/* -- Ambient Stars Layer ------------------------------------ */
+.stars-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Individual star dots - injected by JS */
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  opacity: 0;
+  animation: starTwinkle var(--dur, 3s) var(--delay, 0s) infinite ease-in-out;
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0; transform: scale(0.6); }
+  50%       { opacity: var(--brightness, 0.7); transform: scale(1); }
+}
+
+/* -- Site Header -------------------------------------------- */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1rem 1rem;
+  text-align: center;
+  /* Fade into video below */
+  background: linear-gradient(180deg, rgba(20, 8, 48, 0.70) 0%, transparent 100%);
+  pointer-events: none; /* clicks pass through to bubbles */
+}
+
+.site-subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(0.7rem, 2vw, 0.85rem);
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--clr-text-soft);
+  margin-bottom: 0.5rem;
+  animation: fadeSlideDown 1.4s var(--ease-out) both;
+}
+
+.site-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 7vw, 4.5rem);
+  font-weight: 600;
+  color: var(--clr-text-light);
+  line-height: 1.1;
+  text-shadow: 0 0 40px rgba(249, 198, 208, 0.6), 0 2px 8px rgba(0,0,0,0.4);
+  animation: fadeSlideDown 1.4s 0.15s var(--ease-out) both;
+}
+
+.title-gem {
+  display: inline-block;
+  color: var(--clr-gold);
+  font-style: normal;
+  margin-left: 0.3em;
+  animation: gemPulse 3s 1.5s infinite ease-in-out;
+  text-shadow: 0 0 20px rgba(253, 230, 160, 0.9);
+}
+
+@keyframes gemPulse {
+  0%, 100% { opacity: 1;   transform: scale(1)    rotate(0deg); }
+  50%       { opacity: 0.7; transform: scale(1.15) rotate(15deg); }
+}
+
+.site-hint {
+  font-size: clamp(0.65rem, 1.8vw, 0.78rem);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: var(--clr-text-soft);
+  margin-top: 0.6rem;
+  animation: fadeSlideDown 1.4s 0.3s var(--ease-out) both;
+}
+
+@keyframes fadeSlideDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* -- Bubble Scene Container --------------------------------- */
+#bubble-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  /* Overflow hidden prevents scrollbars from brief off-screen bubble positions */
+  overflow: hidden;
+  pointer-events: none; /* container is pass-through; bubbles set pointer-events themselves */
+}
+
+/* -- Bubbles ------------------------------------------------ */
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: all;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.4em;
+  user-select: none;
+  /* Glass effect */
+  background: var(--bubble-color, rgba(255,255,255,0.12));
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 0 18px var(--bubble-glow, rgba(255,255,255,0.15)),
+    inset 0 1px 2px rgba(255,255,255,0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  /* Soft specular highlight */
+  background-image: radial-gradient(
+    ellipse at 35% 30%,
+    rgba(255,255,255,0.30) 0%,
+    transparent 60%
+  );
+  /* Position driven by JS rAF physics loop */
+  transition:
+    transform 0.3s var(--ease-soft),
+    box-shadow 0.3s ease,
+    opacity 0.4s ease;
+  will-change: transform, left, top;
+  /* Entrance fade-in */
+  opacity: 0;
+}
+
+/* Entrance animation applied via JS class toggle */
+.bubble.visible {
+  opacity: 1;
+}
+
+/* Hover state */
+.bubble:hover {
+  transform: scale(1.08) !important;
+  box-shadow:
+    0 0 32px var(--bubble-glow, rgba(255,255,255,0.3)),
+    0 0 60px var(--bubble-glow, rgba(255,255,255,0.12)),
+    inset 0 1px 2px rgba(255,255,255,0.5);
+  z-index: 6;
+}
+
+/* Bubble preview text */
+.bubble-preview {
+  font-family: var(--font-body);
+  font-size: clamp(0.6rem, 1.5vw, 0.78rem);
+  font-weight: 600;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.3;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  pointer-events: none;
+}
+
+.bubble-icon {
+  font-size: clamp(1.2rem, 3vw, 1.7rem);
+  margin-bottom: 0.3em;
+  pointer-events: none;
+  /* Gentle bob inside bubble */
+  animation: iconBob 2.5s ease-in-out infinite;
+}
+
+@keyframes iconBob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-3px); }
+}
+
+/* -- Bubble Pop Animation ----------------------------------- */
+@keyframes bubblePop {
+  0%   { transform: scale(1);    opacity: 1; }
+  40%  { transform: scale(1.25); opacity: 0.8; }
+  70%  { transform: scale(1.35); opacity: 0.4; filter: blur(2px); }
+  100% { transform: scale(1.5);  opacity: 0; filter: blur(6px); }
+}
+
+.bubble.popping {
+  animation: bubblePop 0.45s var(--ease-out) forwards !important;
+  pointer-events: none;
+}
+
+/* -- Pop Ripple --------------------------------------------- */
+.bubble-ripple {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.5);
+  animation: rippleOut 0.6s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes rippleOut {
+  from { transform: scale(0.8); opacity: 0.8; }
+  to   { transform: scale(2.5); opacity: 0; }
+}
+
+/* -- Modal Backdrop ----------------------------------------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  /* Blurred, tinted background */
+  background: rgba(15, 5, 35, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+}
+
+.modal-backdrop:not([hidden]) {
+  opacity: 1;
+}
+
+/* hidden attribute overrides */
+.modal-backdrop[hidden] {
+  display: none !important;
+}
+
+/* -- Message Modal Card --------------------------------------------- */
+.modal-card {
+  position: relative;
+  max-width: 560px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  border-radius: 28px;
+  padding: 3rem 2.8rem 2.5rem;
+  text-align: center;
+  /* Glassmorphism */
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.22) 0%,
+    rgba(255,255,255,0.10) 100%
+  );
+  border: 1.5px solid rgba(255,255,255,0.32);
+  box-shadow:
+    0 24px 80px rgba(0,0,0,0.35),
+    0 0 0 1px rgba(255,255,255,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.40);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  /* Entrance */
+  transform: scale(0.85) translateY(24px);
+  transition: transform 0.5s var(--ease-modal);
+  /* Scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.25) transparent;
+}
+
+.modal-backdrop:not([hidden]) .modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.modal-card::-webkit-scrollbar { width: 4px; }
+.modal-card::-webkit-scrollbar-track { background: transparent; }
+.modal-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 2px; }
+
+/* Close button */
+.modal-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.4rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.75);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.2s;
+  backdrop-filter: blur(6px);
+}
+
+.modal-close:hover {
+  background: rgba(255,255,255,0.20);
+  transform: scale(1.1) rotate(90deg);
+  color: white;
+}
+
+/* Gem decoration row */
+.modal-gem-row {
+  margin-bottom: 1.2rem;
+}
+
+.modal-gem-icon {
+  font-size: 1.4rem;
+  color: var(--modal-accent, var(--clr-gold));
+  text-shadow: 0 0 20px currentColor;
+  animation: gemPulse 3s infinite ease-in-out;
+  display: inline-block;
+}
+
+.modal-from {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 0.7rem;
+}
+
+.modal-preview {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 4vw, 1.9rem);
+  font-weight: 600;
+  color: var(--clr-text-light);
+  line-height: 1.25;
+  margin-bottom: 1.4rem;
+}
+
+.modal-divider {
+  width: 60px;
+  height: 1.5px;
+  margin: 0 auto 1.8rem;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--modal-accent, rgba(255,220,180,0.6)),
+    transparent
+  );
+}
+
+.modal-body {
+  font-family: var(--font-body);
+  font-size: clamp(0.92rem, 2.2vw, 1.05rem);
+  font-weight: 400;
+  line-height: 1.85;
+  color: rgba(255,255,255,0.88);
+  text-align: center;
+}
+
+.modal-footer-gem {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: var(--modal-accent, rgba(255,220,180,0.5));
+  text-shadow: 0 0 12px currentColor;
+}
+
+/* -- Music Toggle Button ------------------------------------ */
+.music-toggle {
+  position: fixed;
+  bottom: 1.6rem;
+  left: 1.6rem;
+  z-index: 20;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.75);
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.music-toggle:hover {
+  background: rgba(255,255,255,0.20);
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(253, 230, 160, 0.3);
+}
+
+.music-toggle.playing {
+  animation: musicPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes musicPulse {
+  0%, 100% { box-shadow: 0 4px 16px rgba(0,0,0,0.2), 0 0 0 0 rgba(253,230,160,0.4); }
+  50%       { box-shadow: 0 4px 16px rgba(0,0,0,0.2), 0 0 0 8px rgba(253,230,160,0); }
+}
+
+/* -- Van Button (future page hook) ------------------------- */
+.van-btn {
+  position: fixed;
+  bottom: 1.6rem;
+  right: 1.6rem;
+  z-index: 20;
+  width: 72px;
+  height: 56px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+  transition: transform 0.3s var(--ease-soft), filter 0.3s;
+}
+
+.van-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.van-btn:hover {
+  transform: translateX(4px) scale(1.05);
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.4));
+}
+
+
+/* -- Responsiveness stuff --------------------------------------------- */
+@media (max-width: 600px) {
+  .modal-card {
+    padding: 2.4rem 1.8rem 2rem;
+    border-radius: 20px;
+  }
+
+  .site-header {
+    padding-top: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble,
+  .bubble-icon,
+  .site-title,
+  .site-subtitle,
+  .title-gem,
+  .music-toggle {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .bubble { opacity: 1; }
+}
